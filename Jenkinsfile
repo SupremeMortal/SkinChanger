@@ -23,7 +23,9 @@ pipeline {
         }
 
         stage ('Deploy') {
-            sh 'mvn javadoc:jar source:jar deploy -DskipTests'
+            steps {
+                sh 'mvn javadoc:jar source:jar deploy -DskipTests'
+            }
         }
     }
 }
