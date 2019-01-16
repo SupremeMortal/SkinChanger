@@ -5,3 +5,15 @@ api: ["1.0.7"]
 author: SupremeMortal
 description: Change your skin
 website: https://github.com/SupremeMortal/SkinChangerPlugin
+
+permissions:
+  skinchanger.*:
+    default: op
+    description: Access to all skin changer commands
+    children:
+      skinchanger.use:
+        description: Access to /changeskin command
+        default: op
+      skinchanger.reset:
+        description: Access to /resetskin command
+        default: op

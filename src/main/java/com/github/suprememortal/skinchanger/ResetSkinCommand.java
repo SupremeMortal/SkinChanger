@@ -10,10 +10,14 @@ public class ResetSkinCommand extends Command {
     public ResetSkinCommand(SkinChanger skinChanger) {
         super("resetskin", "Reset player's skin", "/reset", new String[]{"rs"});
         this.skinChanger = skinChanger;
+        setPermission("skinchanger.reset");
     }
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
+        if (!testPermission(sender)) {
+            return true;
+        }
         if (!(sender instanceof Player)) {
             sender.sendMessage("Not a player");
             return true;
