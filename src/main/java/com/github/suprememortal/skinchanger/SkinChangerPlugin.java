@@ -70,7 +70,7 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         }
 
         skin.setGeometryData(geometry);
-        skin.setGeometryName(name);
+        skin.setGeometryName("geometry." + name);
         skin.setSkinData(skinData);
         skin.setSkinId(name);
 
