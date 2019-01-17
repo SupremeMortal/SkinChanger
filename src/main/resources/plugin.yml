@@ -1,10 +1,10 @@
-name: SkinChangerPlugin
+name: SkinChanger
 main: com.github.suprememortal.skinchanger.SkinChangerPlugin
 version: "1.0.0"
 api: ["1.0.7"]
 author: SupremeMortal
 description: Change your skin
-website: https://github.com/SupremeMortal/SkinChangerPlugin
+website: https://github.com/SupremeMortal/SkinChanger
 
 permissions:
   skinchanger.*:
