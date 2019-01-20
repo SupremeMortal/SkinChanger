@@ -30,7 +30,7 @@ public class SkinChangerCommand extends Command {
         }
 
         try {
-            skinChanger.changeSkin((Player) sender, args[0].toLowerCase());
+            skinChanger.changeSkin((Player) sender, args[0]);
         } catch (SkinChangeException e) {
             sender.sendMessage(e.getMessage());
         }
