@@ -6,6 +6,7 @@ import cn.nukkit.entity.data.Skin;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.block.LiquidFlowEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.network.protocol.PlayerSkinPacket;
@@ -82,7 +83,7 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         packet.skin = skin;
         packet.newSkinName = name;
         packet.oldSkinName = oldSkin.getSkinId();
-        packet.premium = false;
+        packet.premium = true;
         packet.uuid = player.getUniqueId();
 
         Server.broadcastPacket(Server.getInstance().getOnlinePlayers().values(), packet);
@@ -93,6 +94,7 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         Skin skin = originalSkins.get(player.getUniqueId());
         if (skin != null) {
             Skin oldSkin = player.getSkin();
+            player.setSkin(skin);
 
             PlayerSkinPacket packet = new PlayerSkinPacket();
             packet.skin = skin;
@@ -115,5 +117,10 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event) {
         originalSkins.remove(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onFlow(LiquidFlowEvent event) {
+        event.setCancelled();
     }
 }
