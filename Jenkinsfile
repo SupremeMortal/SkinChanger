@@ -17,7 +17,7 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts artifacts: 'target/skinchanger-*-SNAPSHOT.jar', fingerprint: true
+                    archiveArtifacts artifacts: 'target/SkinChanger.jar', fingerprint: true
                 }
             }
         }
