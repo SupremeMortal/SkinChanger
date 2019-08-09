@@ -119,7 +119,7 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         return false;
     }
 
-    String[] getAllSkinDirectories() {
+    public String[] getAvailableSkins() {
         List<String> skins = new ArrayList<>();
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(this.pluginDir, DIRECTORIES_FILTER)) {
             for (Path path : ds) {

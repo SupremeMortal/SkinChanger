@@ -9,14 +9,14 @@ import com.google.common.base.Strings;
 public class SkinChangerCommand extends Command {
     private final SkinChanger skinChanger;
 
-    public SkinChangerCommand(SkinChangerPlugin skinChanger) {
+    public SkinChangerCommand(SkinChanger skinChanger) {
         super("changeskin", "Change skin", "/changeskin <skin id>", new String[]{"cs", "skinchange"});
         this.skinChanger = skinChanger;
 
         this.commandParameters.clear();
 
         this.commandParameters.put("default", new CommandParameter[]{
-                new CommandParameter("skin", false, skinChanger.getAllSkinDirectories())
+                new CommandParameter("skin", false, skinChanger.getAvailableSkins())
         });
         this.setPermission("skinchanger.use");
     }
