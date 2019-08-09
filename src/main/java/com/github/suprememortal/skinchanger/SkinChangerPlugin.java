@@ -6,7 +6,6 @@ import cn.nukkit.entity.data.Skin;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
-import cn.nukkit.event.block.LiquidFlowEvent;
 import cn.nukkit.event.player.PlayerLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.network.protocol.PlayerSkinPacket;
@@ -17,11 +16,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class SkinChangerPlugin extends PluginBase implements Listener, SkinChanger {
     private final Map<UUID, Skin> originalSkins = new HashMap<>();
@@ -89,25 +87,7 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         Server.broadcastPacket(Server.getInstance().getOnlinePlayers().values(), packet);
     }
 
-    @Override
-    public boolean resetSkin(Player player) {
-        Skin skin = originalSkins.get(player.getUniqueId());
-        if (skin != null) {
-            Skin oldSkin = player.getSkin();
-            player.setSkin(skin);
-
-            PlayerSkinPacket packet = new PlayerSkinPacket();
-            packet.skin = skin;
-            packet.newSkinName = skin.getSkinId();
-            packet.oldSkinName = oldSkin.getSkinId();
-            packet.premium = false;
-            packet.uuid = player.getUniqueId();
-
-            Server.broadcastPacket(Server.getInstance().getOnlinePlayers().values(), packet);
-            return true;
-        }
-        return false;
-    }
+    private static final DirectoriesFilter DIRECTORIES_FILTER = new DirectoriesFilter();
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLogin(PlayerLoginEvent event) {
@@ -119,8 +99,42 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         originalSkins.remove(event.getPlayer().getUniqueId());
     }
 
-    @EventHandler
-    public void onFlow(LiquidFlowEvent event) {
-        event.setCancelled();
+    @Override
+    public boolean resetSkin(Player player) {
+        Skin skin = originalSkins.get(player.getUniqueId());
+        if (skin != null) {
+            Skin oldSkin = player.getSkin();
+            player.setSkin(skin);
+
+            PlayerSkinPacket packet = new PlayerSkinPacket();
+            packet.skin = skin;
+            packet.newSkinName = skin.getSkinId();
+            packet.oldSkinName = oldSkin.getSkinId();
+            packet.premium = true;
+            packet.uuid = player.getUniqueId();
+
+            Server.broadcastPacket(Server.getInstance().getOnlinePlayers().values(), packet);
+            return true;
+        }
+        return false;
+    }
+
+    String[] getAllSkinDirectories() {
+        List<String> skins = new ArrayList<>();
+        try (DirectoryStream<Path> ds = Files.newDirectoryStream(this.pluginDir, DIRECTORIES_FILTER)) {
+            for (Path path : ds) {
+                skins.add(path.getFileName().toString());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return skins.toArray(new String[0]);
+    }
+
+    private static class DirectoriesFilter implements DirectoryStream.Filter<Path> {
+        @Override
+        public boolean accept(Path entry) throws IOException {
+            return Files.isDirectory(entry);
+        }
     }
 }

@@ -3,16 +3,22 @@ package com.github.suprememortal.skinchanger;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-
+import cn.nukkit.command.data.CommandParameter;
 import com.google.common.base.Strings;
 
 public class SkinChangerCommand extends Command {
     private final SkinChanger skinChanger;
 
-    public SkinChangerCommand(SkinChanger skinChanger) {
+    public SkinChangerCommand(SkinChangerPlugin skinChanger) {
         super("changeskin", "Change skin", "/changeskin <skin id>", new String[]{"cs", "skinchange"});
         this.skinChanger = skinChanger;
-        setPermission("skinchanger.use");
+
+        this.commandParameters.clear();
+
+        this.commandParameters.put("default", new CommandParameter[]{
+                new CommandParameter("skin", false, skinChanger.getAllSkinDirectories())
+        });
+        this.setPermission("skinchanger.use");
     }
 
     @Override
