@@ -1,6 +1,6 @@
-name: SkinChanger
+name: ${project.name}
 main: com.github.suprememortal.skinchanger.SkinChangerPlugin
-version: "1.0.0"
+version: ${project.version}
 api: ["1.0.7"]
 author: SupremeMortal
 description: Change your skin

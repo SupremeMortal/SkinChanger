@@ -7,7 +7,7 @@
     <groupId>com.github.suprememortal</groupId>
     <name>SkinChanger</name>
     <artifactId>skinchanger</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2</version>
 
 
     <properties>
@@ -47,5 +47,11 @@
 
     <build>
         <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources/</directory>
+            </resource>
+        </resources>
     </build>
 </project>

@@ -72,6 +72,7 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         skin.setGeometryName("geometry." + name);
         skin.setSkinData(skinData);
         skin.setSkinId(name);
+        skin.setPremium(true);
 
         Skin oldSkin = player.getSkin();
 
@@ -81,7 +82,6 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
         packet.skin = skin;
         packet.newSkinName = name;
         packet.oldSkinName = oldSkin.getSkinId();
-        packet.premium = true;
         packet.uuid = player.getUniqueId();
 
         Server.broadcastPacket(Server.getInstance().getOnlinePlayers().values(), packet);
@@ -110,7 +110,6 @@ public class SkinChangerPlugin extends PluginBase implements Listener, SkinChang
             packet.skin = skin;
             packet.newSkinName = skin.getSkinId();
             packet.oldSkinName = oldSkin.getSkinId();
-            packet.premium = true;
             packet.uuid = player.getUniqueId();
 
             Server.broadcastPacket(Server.getInstance().getOnlinePlayers().values(), packet);
